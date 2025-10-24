@@ -13,49 +13,66 @@ namespace FailingTest
     {
     public:
 
-        //a test case for Player1 winning with rock versus scissors !
         TEST_METHOD(TestPlayer1Wins_RockVsScissors)
         {
-            char player1[] = "Rock";
-            char player2[] = "Scissors";
-            char* result = Determine_Winner(player1, player2);
-            Assert::AreEqual("Player1", result, L"Expected ''Player1'' when Player1 chooses Rock and Player2 chooses Scissors");
+            const char* result = Determine_Winner("Rock", "Scissors");
+            Assert::AreEqual("Player1", result);
         }
 
-        //a test case for Player2 winning with paper versus rock !
         TEST_METHOD(TestPlayer2Wins_PaperVsRock)
         {
-            char player1[] = "Rock";
-            char player2[] = "Paper";
-            char* result = Determine_Winner(player1, player2);
-            Assert::AreEqual("Player2", result, L"Expected ''Player2'' when Player2 chooses Paper and Player1 chooses Rock");
+            const char* result = Determine_Winner("Rock", "Paper");
+            Assert::AreEqual("Player2", result);
         }
 
-        //a test case for a Draw with both players choosing scissors !
         TEST_METHOD(TestDraw_ScissorsVsScissors)
         {
-            char player1[] = "Scissors";
-            char player2[] = "Scissors";
-            char* result = Determine_Winner(player1, player2);
-            Assert::AreEqual("Draw", result, L"Expected ''Draw'' when both players choose Scissors");
+            const char* result = Determine_Winner("Scissors", "Scissors");
+            Assert::AreEqual("Draw", result);
         }
 
-        //a test case for invalid input when Player1 enters an invalid choice
         TEST_METHOD(TestInvalidInput_Player1Invalid)
         {
-            char player1[] = "Lizard";
-            char player2[] = "Rock";
-            char* result = Determine_Winner(player1, player2);
-            Assert::AreEqual("Invalid", result, L"Expected ''Invalid'' when Player1 enters an invalid choice");
+            const char* result = Determine_Winner("Lizard", "Rock");
+            Assert::AreEqual("Invalid", result);
         }
 
-        //a test case for invalid input when Player2 enters an invalid choice
         TEST_METHOD(TestInvalidInput_Player2Invalid)
         {
-            char player1[] = "Paper";
-            char player2[] = "Spock";
-            char* result = Determine_Winner(player1, player2);
-            Assert::AreEqual("Invalid", result, L"Expected ''Invalid'' when Player2 enters an invalid choice");
+            const char* result = Determine_Winner("Paper", "Spock");
+            Assert::AreEqual("Invalid", result);
+        }
+
+        TEST_METHOD(TestCaseInsensitive_Lowercase)
+        {
+            const char* result = Determine_Winner("rock", "scissors");
+            Assert::AreEqual("Player1", result);
+        }
+
+        TEST_METHOD(TestCaseInsensitive_Uppercase)
+        {
+            const char* result = Determine_Winner("PAPER", "ROCK");
+            Assert::AreEqual("Player1", result);
+        }
+
+        TEST_METHOD(TestNullInput)
+        {
+            const char* result = Determine_Winner(nullptr, "Rock");
+            Assert::AreEqual("Invalid", result);
+        }
+
+        TEST_METHOD(TestAllWinConditions_Player1)
+        {
+            Assert::AreEqual("Player1", Determine_Winner("Rock", "Scissors"));
+            Assert::AreEqual("Player1", Determine_Winner("Paper", "Rock"));
+            Assert::AreEqual("Player1", Determine_Winner("Scissors", "Paper"));
+        }
+
+        TEST_METHOD(TestAllWinConditions_Player2)
+        {
+            Assert::AreEqual("Player2", Determine_Winner("Scissors", "Rock"));
+            Assert::AreEqual("Player2", Determine_Winner("Rock", "Paper"));
+            Assert::AreEqual("Player2", Determine_Winner("Paper", "Scissors"));
         }
     };
 }
